@@ -1,6 +1,7 @@
 package domain;
 
 import java.util.List;
+import java.util.Objects;
 
 /**
  * @author Weiduo
@@ -42,5 +43,20 @@ public class Question {
                 ", options=" + options +
                 ", answer='" + answer + '\'' +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Question question1 = (Question) o;
+        return question.equals(question1.question) &&
+                options.equals(question1.options) &&
+                answer.equals(question1.answer);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(question, options, answer);
     }
 }
