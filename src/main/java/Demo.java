@@ -7,7 +7,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import domain.Question;
 
 import java.io.*;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
@@ -29,13 +28,21 @@ public class Demo {
         compareTree(tree1, tree2);
 
     }
-    private static void compareTree(JsonNode tree1, JsonNode tree2) {
-        if(isValueNode(tree1, tree2)) {
-            if(tree1.toString().equals(tree2.toString())) return;
-            else System.out.println("diff: " + "first: " + tree1.toString() + ", second: " + tree2.toString());
-        }else if(isObject(tree1, tree2)) {
-            Iterator<Map.Entry<String, JsonNode>> iterator1 = tree1.fields();
-            Iterator<Map.Entry<String, JsonNode>> iterator2 = tree2.fields();
+    private static void compareTree(JsonNode node1, JsonNode node2) {
+//        System.out.println("tree1: " + tree1 == null ? "null" : tree1 + ", tree2: " + tree2 == null ? "null" : tree2);
+//        System.out.println("tree1: " + tree1 == null ? "null" : tree1);
+//        System.out.println("tree1 =  " + tree1 + ", tree2 = " + tree2);
+        if(node1 == null && node2 == null) return;
+        else if(node1 == null || node2 == null) {
+            System.out.println("diff: " + "first: " + (node1 == null ? "null" : node1.toString()) + ", second: " + (node2 == null ? "null" : node2.toString()));
+            return;
+        }
+        if(isValueNode(node1, node2)) {
+            if(node1.toString().equals(node2.toString())) return;
+            else System.out.println("diff: " + "first: " + node1.toString() + ", second: " + node2.toString());
+        }else if(isObject(node1, node2)) {
+            Iterator<Map.Entry<String, JsonNode>> iterator1 = node1.fields();
+            Iterator<Map.Entry<String, JsonNode>> iterator2 = node2.fields();
 
             while(iterator1.hasNext() || iterator2.hasNext()) {
                 Map.Entry<String, JsonNode> entry1 = iterator1.next();
@@ -43,14 +50,14 @@ public class Demo {
                 compareTree(entry1.getValue(), entry2.getValue());
             }
 
-        }else if(isArray(tree1, tree2)) {
-            Iterator<Map.Entry<String, JsonNode>> iterator1 = tree1.fields();
-            Iterator<Map.Entry<String, JsonNode>> iterator2 = tree2.fields();
+        }else if(isArray(node1, node2)) {
+            Iterator<JsonNode> iterator1 = node1.iterator();
+            Iterator<JsonNode> iterator2 = node2.iterator();
 
             while(iterator1.hasNext() || iterator2.hasNext()) {
-                Map.Entry<String, JsonNode> entry1 = iterator1.next();
-                Map.Entry<String, JsonNode> entry2 = iterator2.next();
-                compareTree(entry1.getValue(), entry2.getValue());
+                JsonNode next1 = iterator1.hasNext() ? iterator1.next() : null;
+                JsonNode next2 = iterator2.hasNext() ? iterator2.next() : null;
+                compareTree(next1, next2);
             }
         }
     }
