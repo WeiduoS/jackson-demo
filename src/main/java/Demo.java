@@ -45,9 +45,9 @@ public class Demo {
             Iterator<Map.Entry<String, JsonNode>> iterator2 = node2.fields();
 
             while(iterator1.hasNext() || iterator2.hasNext()) {
-                Map.Entry<String, JsonNode> entry1 = iterator1.next();
-                Map.Entry<String, JsonNode> entry2 = iterator2.next();
-                compareTree(entry1.getValue(), entry2.getValue());
+                Map.Entry<String, JsonNode> entry1 = iterator1.hasNext() ? iterator1.next() : null;
+                Map.Entry<String, JsonNode> entry2 = iterator2.hasNext() ? iterator2.next() : null;
+                compareTree(entry1 == null ? null : entry1.getValue(), entry2 == null ? null : entry2.getValue());
             }
 
         }else if(isArray(node1, node2)) {
