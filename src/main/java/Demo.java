@@ -24,11 +24,14 @@ public class Demo {
         TypeReference<Map<String, Map<String, Map<String, Question>>>> typeRef
                 = new TypeReference<Map<String, Map<String, Map<String, Question>>>>() {};
 
-        parseJson(jsonString, typeRef);
+        Map<String, Map<String, Map<String, Question>>> obj1 = parseJson(jsonString, typeRef);
+        Map<String, Map<String, Map<String, Question>>> obj2 = parseJson(jsonString, typeRef);
+
+        System.out.println(obj1.toString().equals(obj2.toString()));
 
     }
 
-    private static void parseJson(String jsonString, TypeReference<Map<String, Map<String, Map<String, Question>>>> typeRef) {
+    private static Map<String, Map<String, Map<String, Question>>> parseJson(String jsonString, TypeReference<Map<String, Map<String, Map<String, Question>>>> typeRef) {
         try {
             // 反序列化 JSON 到对象
             Map<String, Map<String, Map<String, Question>>> obj = MAPPER.readValue(jsonString, typeRef);
@@ -37,6 +40,7 @@ public class Demo {
             // 序列化对象到 JSON
             String json = MAPPER.writeValueAsString(obj);
             System.out.println("序列化对象到 JSON: " + json);
+            return obj;
         } catch (JsonParseException e) {
             e.printStackTrace();
         } catch (JsonMappingException e) {
@@ -44,6 +48,7 @@ public class Demo {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        return null;
     }
 
     private static String convertJsonFileToStr(String fileName) {
