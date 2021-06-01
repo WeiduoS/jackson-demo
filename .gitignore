@@ -1,0 +1,6 @@
+#ignore the Intellij idea local configuration
+.idea
+jackson-demo.iml
+
+#ignore the compiled folder
+target
